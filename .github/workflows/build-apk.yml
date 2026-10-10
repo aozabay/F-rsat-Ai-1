@@ -1,4 +1,4 @@
-yaml name: Build Android APK on push: branches: jobs build: runs-on: ubuntu-latest
+yaml name: Build Android APK on push: branches: jobs build: runs-on: ubuntu-latest steps:
 steps: name: Checkout uses: actions/checkout@v4
 distribution: temurin name: Grant execute permission run: chmod +x gradlew name: Build Debug APK
 run: ./gradlew assembleDebug name: Upload APK artifact uses actions/upload-artifact@v4
