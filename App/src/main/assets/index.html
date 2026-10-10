@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Kişisel, geliştirilebilir iş ve kazanç fırsatları asistanı.">
+<link rel="manifest" href="manifest.json">
+<title>Fırsat Avcısı AI</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#17223a;--line:#26334e;--text:#f3f6ff;--muted:#a6b2ca;--accent:#74e0b5;--accent2:#83a7ff;--warn:#f8cc76}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% 0%,#182747 0,transparent 32%),var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{max-width:900px;margin:auto;padding:18px 15px 92px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:6px 0 20px}.brand{display:flex;gap:11px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#6c9cff);display:grid;place-items:center;color:#081222;font-size:23px;font-weight:900}.brand h1{font-size:18px;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.badge{border:1px solid #315747;background:#112a28;color:var(--accent);border-radius:99px;padding:6px 9px;font-size:11px;white-space:nowrap}
+h2{font-size:20px;margin:0 0 6px}.sub{color:var(--muted);margin:0 0 16px;font-size:13px}.hero{background:linear-gradient(135deg,#172641,#122033);border:1px solid #2a3b5c;border-radius:22px;padding:20px;margin-bottom:15px}.hero h2{font-size:24px;max-width:530px}.hero p{color:#bac7dd;margin:8px 0 17px}.btn{border:0;border-radius:12px;padding:12px 15px;font-weight:750;background:var(--accent);color:#071a18;cursor:pointer}.btn.secondary{background:#243451;color:var(--text);border:1px solid #344765}.btn.small{padding:9px 11px;font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:rgba(18,26,46,.94);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}.stat{font-size:23px;font-weight:800;margin:6px 0}.muted{color:var(--muted);font-size:12px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.tag{font-size:11px;border-radius:8px;padding:5px 8px;background:#20304b;color:#b9ccf5;display:inline-block}.tag.green{background:#15382f;color:var(--accent)}.section{margin-top:20px}.opportunity{border-bottom:1px solid var(--line);padding:13px 0}.opportunity:last-child{border:0;padding-bottom:0}.opportunity h3{font-size:15px;margin:7px 0 4px}.opportunity p{color:var(--muted);font-size:13px;margin:0 0 8px}.nav{position:fixed;bottom:0;left:0;right:0;background:#0c1324ed;backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5;padding:8px 5px calc(8px + env(safe-area-inset-bottom))}.nav button{flex:1;max-width:170px;background:none;color:var(--muted);border:0;padding:8px 3px;font-size:11px;cursor:pointer}.nav button span{display:block;font-size:18px;margin-bottom:2px}.nav button.active{color:var(--accent)}.page{display:none}.page.active{display:block}input,textarea,select{width:100%;padding:12px;background:#0c1426;color:var(--text);border:1px solid #34425e;border-radius:11px;margin:5px 0 12px;font:inherit}label{font-size:12px;color:#c0cce0}textarea{min-height:90px;resize:vertical}.chatbox{height:310px;overflow:auto;display:flex;flex-direction:column;gap:10px;margin:12px 0}.bubble{max-width:88%;padding:11px 13px;border-radius:14px;background:#202e48;color:#e9efff;font-size:13px;white-space:pre-wrap}.bubble.me{align-self:flex-end;background:#174437;color:#dffdf1}.chatrow{display:flex;gap:8px}.chatrow input{margin:0;min-width:0}.notice{border:1px solid #65512b;background:#2b2416;color:#f9dfa5;border-radius:12px;padding:11px;font-size:12px;margin-top:12px}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}.footer{font-size:11px;color:#7e8ba5;text-align:center;margin:22px 0 5px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hero{padding:26px}.app{padding-top:26px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><div class="logo">✦</div><div><h1>Fırsat Avcısı AI</h1><p>Kişisel kazanç fırsatları asistanın</p></div></div><span class="badge">Açık kaynak taslak</span></header>
+
+<main>
+<section id="home" class="page active">
+<div class="hero"><span class="tag green">Kişisel kontrol paneli</span><h2>Yeni fırsatları senin için keşfet.</h2><p>İş, hizmet, ticaret ve çevrim içi kazanç fırsatlarını tek yerde düzenle. Önce tercihlerini belirle, sonra araştırma altyapısını bağla.</p><button class="btn" onclick="showPage('chat')">Yapay zekâyla konuş →</button></div>
+<div class="grid">
+<div class="card"><div class="muted">Kaydedilen fırsatlar</div><div class="stat" id="savedCount">0</div><div class="muted">Bu cihazda saklanır</div></div>
+<div class="card"><div class="muted">Arama yarıçapı</div><div class="stat">50 km</div><div class="muted">Konum ayarından değiştirilebilir</div></div>
+<div class="card"><div class="muted">Araştırma durumu</div><div class="stat" style="font-size:17px;color:var(--warn)">Kurulum bekliyor</div><div class="muted">Kaynak bağlantısı gerekli</div></div>
+<div class="card"><div class="muted">Bütçe yaklaşımı</div><div class="stat" style="font-size:17px">Ücretsiz öncelikli</div><div class="muted">Ücretli servisler isteğe bağlı</div></div>
+</div>
+<div class="section card"><div class="row"><div><h2>Fırsat akışı</h2><p class="sub" style="margin:4px 0 0">İlk sürümde kendi fırsatlarını kaydet veya örnekleri incele.</p></div><button class="btn secondary small" onclick="showPage('opportunities')">Tümünü gör</button></div><div id="homeOpportunities"></div></div>
+<div class="notice">Bu sürüm arayüz prototipidir. Henüz internette otomatik tarama yapmaz; gerçek araştırma için kaynaklar ve yapay zekâ bağlantısı ayrıca kurulmalıdır.</div>
+</section>
+
+<section id="opportunities" class="page">
+<h2>Fırsat defteri</h2><p class="sub">Bulduğun fırsatları kaydet, not ekle ve durumlarını takip et.</p>
+<div class="card"><label>Fırsat adı</label><input id="oppTitle" placeholder="Örn. Mobilya montaj işi"><label>Tür</label><select id="oppType"><option>Günlük iş</option><option>Hizmet / ustalık</option><option>Alım satım</option><option>Komisyon</option><option>Uzaktan iş</option><option>Proje / freelance</option><option>Diğer</option></select><label>Beklenen kazanç (isteğe bağlı)</label><input id="oppMoney" placeholder="Örn. 1500 TL"><label>Kaynak veya iletişim</label><input id="oppSource" placeholder="İlan bağlantısı / telefon / işletme"><label>Notlar</label><textarea id="oppNotes" placeholder="Mesafe, masraf, şartlar..."></textarea><button class="btn" onclick="addOpportunity()">Fırsatı kaydet</button></div>
+<div class="card"><div class="row"><h2>Kaydedilenler</h2><span class="tag" id="oppCount">0 fırsat</span></div><div id="allOpportunities"></div></div>
+</section>
+
+<section id="chat" class="page">
+<h2>Kişisel yapay zekâ</h2><p class="sub">İş tercihlerini konuşarak belirle. Bu prototip sohbetleri cihazında tutar.</p>
+<div class="card"><div class="chatbox" id="chatbox"><div class="bubble">Merhaba! Para kazanma fırsatlarını birlikte düzenleyebiliriz. Ne tür işleri yapabileceğini, hangi araçlara veya becerilere sahip olduğunu ve hangi fırsatlardan kaçınmak istediğini anlatabilirsin.</div></div><div class="chatrow"><input id="chatInput" placeholder="Örn. Günlük iş de olur, internet işi de..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn" onclick="sendChat()">Gönder</button></div></div>
+<div class="notice">Not: Şimdilik bu, gerçek bir dil modeli değil; sohbet arayüzü prototipidir. Gerçek AI için sonradan yerel model veya çevrim içi API bağlanabilir.</div>
+</section>
+
+<section id="automation" class="page">
+<h2>Araştırma ve otomasyon</h2><p class="sub">İleride otomatik araştırma altyapısını buradan yapılandıracağız.</p>
+<div class="card"><h2>Arama tercihleri</h2><label>Merkez şehir / bölge</label><input id="location" placeholder="Şehir veya ilçe (ör. Konya)"><label>Yarıçap</label><select id="radius"><option>5 km</option><option>20 km</option><option selected>50 km</option><option>100 km</option><option>Tüm Türkiye</option></select><label>Fırsat türleri</label><textarea id="types" placeholder="Tüm fırsatlar: günlük işler, hizmet, ticaret, uzaktan işler...">Tüm para kazanma fırsatları</textarea><label>Araştırma sıklığı (hedef)</label><select id="frequency"><option>Günde bir kez</option><option selected>Günde birkaç kez</option><option>Saatte bir (sunucu gerekir)</option></select><button class="btn" onclick="saveSettings()">Tercihleri kaydet</button><p id="settingsStatus" class="muted"></p></div>
+<div class="card"><h2>Kaynaklar</h2><div class="opportunity"><b>İş ilanı siteleri</b><p>İzin verilen arayüzler, RSS veya resmi API varsa bağlanacak.</p><span class="tag">Bağlanmadı</span></div><div class="opportunity"><b>Şirket kariyer sayfaları</b><p>Herkese açık sayfalar ve uygun tarama kuralları.</p><span class="tag">Bağlanmadı</span></div><div class="opportunity"><b>Serbest çalışma platformları</b><p>Platform kurallarına ve erişim yöntemlerine göre.</p><span class="tag">Bağlanmadı</span></div><div class="opportunity"><b>Yerel işletmeler</b><p>Halka açık işletme bilgileri; fırsat olduğu ayrıca doğrulanmalı.</p><span class="tag">Bağlanmadı</span></div></div>
+</section>
+
+<section id="settings" class="page">
+<h2>Ayarlar ve geliştirici alanı</h2><p class="sub">Bu proje genişletilebilir olacak şekilde hazırlanmıştır.</p>
+<div class="card"><h2>Gizlilik</h2><p class="muted">Bu prototipte kayıtlar tarayıcının localStorage alanında saklanır. Tarayıcı verilerini temizlersen kayıtlar silinebilir. Henüz hesap sistemi veya bulut senkronizasyonu yoktur.</p><button class="btn secondary" onclick="exportData()">Verilerimi dışa aktar (JSON)</button> <button class="btn secondary" onclick="clearData()">Yerel verileri sil</button></div>
+<div class="card"><h2>Geliştirme yol haritası</h2><div class="opportunity">1. Aşama — Mobil uyumlu PWA arayüzü <span class="tag green">Bu prototip</span></div><div class="opportunity">2. Aşama — Gerçek AI bağlantısı <span class="tag">Sonraki</span></div><div class="opportunity">3. Aşama — Arama kaynakları ve yinelenen ilanları temizleme <span class="tag">Planlandı</span></div><div class="opportunity">4. Aşama — Sunucu zamanlayıcısı ve bildirimler <span class="tag">Planlandı</span></div><div class="opportunity">5. Aşama — Android APK ve açık kaynak deposu <span class="tag">Planlandı</span></div></div>
+<div class="notice">Güvenlik: API anahtarlarını uygulama koduna yazma. Gerçek entegrasyonda anahtarlar sunucu tarafında saklanmalı. Başvurular ve mesajlar için kullanıcı onayı alınmalı.</div>
+</section>
+</main>
+<div class="footer">Fırsat Avcısı AI · Açık kaynak geliştirme prototipi · v0.1</div>
+</div>
+<nav class="nav">
+<button class="active" data-page="home" onclick="showPage('home')"><span>⌂</span>Ana sayfa</button>
+<button data-page="opportunities" onclick="showPage('opportunities')"><span>◈</span>Fırsatlar</button>
+<button data-page="chat" onclick="showPage('chat')"><span>✦</span>Asistan</button>
+<button data-page="automation" onclick="showPage('automation')"><span>⟳</span>Otomasyon</button>
+<button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Ayarlar</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id);
+let opportunities=JSON.parse(localStorage.getItem('fa_opps')||'[]');
+let messages=JSON.parse(localStorage.getItem('fa_chat')||'[]');
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='opportunities')renderOpps();if(id==='home')renderHome();window.scrollTo(0,0)}
+function persist(){localStorage.setItem('fa_opps',JSON.stringify(opportunities));$('savedCount').textContent=opportunities.length;$('oppCount').textContent=opportunities.length+' fırsat'}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function oppHTML(o,i){return `<div class="opportunity"><div class="row"><span class="tag">${esc(o.type)}</span><button class="btn secondary small" onclick="removeOpp(${i})">Sil</button></div><h3>${esc(o.title)}</h3><p>${esc(o.notes||'Not eklenmedi')}</p><div class="row"><span class="muted">${esc(o.source||'Kaynak belirtilmedi')}</span><b style="color:var(--accent)">${esc(o.money||'Kazanç belirtilmedi')}</b></div></div>`}
+function renderOpps(){$('allOpportunities').innerHTML=opportunities.length?opportunities.map(oppHTML).join(''):'<div class="empty">Henüz fırsat kaydetmedin.</div>';$('oppCount').textContent=opportunities.length+' fırsat'}
+function renderHome(){$('savedCount').textContent=opportunities.length;$('homeOpportunities').innerHTML=opportunities.length?opportunities.slice(-3).reverse().map((o)=>`<div class="opportunity"><span class="tag">${esc(o.type)}</span><h3>${esc(o.title)}</h3><p>${esc(o.notes||'Not eklenmedi')}</p><b style="color:var(--accent)">${esc(o.money||'Kazanç belirtilmedi')}</b></div>`).join(''):'<div class="empty">Henüz kayıtlı fırsat yok. “Fırsatlar” bölümünden ilk fırsatını ekleyebilirsin.</div>'}
+function addOpportunity(){const title=$('oppTitle').value.trim();if(!title){alert('Lütfen fırsat adını yaz.');return}opportunities.push({title,type:$('oppType').value,money:$('oppMoney').value.trim(),source:$('oppSource').value.trim(),notes:$('oppNotes').value.trim(),created:new Date().toISOString()});persist();['oppTitle','oppMoney','oppSource','oppNotes'].forEach(id=>$(id).value='');renderOpps();renderHome();alert('Fırsat kaydedildi.')}
+function removeOpp(i){if(confirm('Bu fırsatı silmek istiyor musun?')){opportunities.splice(i,1);persist();renderOpps();renderHome()}}
+function addBubble(text,me=false){const d=document.createElement('div');d.className='bubble'+(me?' me':'');d.textContent=text;$('chatbox').appendChild(d);$('chatbox').scrollTop=$('chatbox').scrollHeight}
+function sendChat(){const input=$('chatInput'),t=input.value.trim();if(!t)return;addBubble(t,true);messages.push({role:'user',content:t});input.value='';let reply='Bunu tercihlerin arasına not edebiliriz. Şu anda bu prototip gerçek bir yapay zekâya bağlı değil. Bir sonraki geliştirme aşamasında bu sohbeti açık kaynaklı bir modele bağlayıp tercihlerini otomatik analiz edeceğiz.';const lower=t.toLocaleLowerCase('tr');if(lower.includes('günlük'))reply='Günlük iş fırsatlarını önceliklendirebiliriz. Gerçek arama bağlantısı kurulduğunda ilan kaynağı, ücret, mesafe ve masraf bilgilerini karşılaştıracağız.';else if(lower.includes('uzaktan')||lower.includes('internet'))reply='Uzaktan iş ve internetten kazanç fırsatlarını da kapsama alacağız; bunlar için 50 km sınırını uygulamayacağız.';else if(lower.includes('konya'))reply='Konya merkezini arama noktası olarak kullanmak istiyorsan Otomasyon bölümündeki konum alanına yazıp kaydedebilirsin.';messages.push({role:'assistant',content:reply});localStorage.setItem('fa_chat',JSON.stringify(messages));setTimeout(()=>addBubble(reply),250)}
+function saveSettings(){const s={location:$('location').value.trim(),radius:$('radius').value,types:$('types').value,frequency:$('frequency').value};localStorage.setItem('fa_settings',JSON.stringify(s));$('settingsStatus').textContent='Tercihler bu cihazda kaydedildi.'}
+function loadSettings(){const s=JSON.parse(localStorage.getItem('fa_settings')||'{}');if(s.location)$('location').value=s.location;if(s.radius)$('radius').value=s.radius;if(s.types)$('types').value=s.types;if(s.frequency)$('frequency').value=s.frequency}
+function exportData(){const data={opportunities,messages,settings:JSON.parse(localStorage.getItem('fa_settings')||'{}'),exportedAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='firsat-avcisi-veriler.json';a.click();URL.revokeObjectURL(a.href)}
+function clearData(){if(confirm('Bu cihazdaki fırsatları, sohbetleri ve tercihleri silmek istediğine emin misin?')){['fa_opps','fa_chat','fa_settings'].forEach(k=>localStorage.removeItem(k));opportunities=[];messages=[];$('chatbox').innerHTML='';addBubble('Merhaba! Para kazanma fırsatlarını birlikte düzenleyebiliriz. Ne tür işleri yapabileceğini, hangi araçlara veya becerilere sahip olduğunu ve hangi fırsatlardan kaçınmak istediğini anlatabilirsin.');persist();renderOpps();renderHome();loadSettings()}}
+const oldMessages=messages;if(oldMessages.length){oldMessages.forEach(m=>addBubble(m.content,m.role==='user'))}
+persist();renderHome();renderOpps();loadSettings();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
