@@ -79,6 +79,83 @@ function renderHome(){$('savedCount').textContent=opportunities.length;$('homeOp
 function addOpportunity(){const title=$('oppTitle').value.trim();if(!title){alert('Lütfen fırsat adını yaz.');return}opportunities.push({title,type:$('oppType').value,money:$('oppMoney').value.trim(),source:$('oppSource').value.trim(),notes:$('oppNotes').value.trim(),created:new Date().toISOString()});persist();['oppTitle','oppMoney','oppSource','oppNotes'].forEach(id=>$(id).value='');renderOpps();renderHome();alert('Fırsat kaydedildi.')}
 function removeOpp(i){if(confirm('Bu fırsatı silmek istiyor musun?')){opportunities.splice(i,1);persist();renderOpps();renderHome()}}
 function addBubble(text,me=false){const d=document.createElement('div');d.className='bubble'+(me?' me':'');d.textContent=text;$('chatbox').appendChild(d);$('chatbox').scrollTop=$('chatbox').scrollHeight}
+  let voiceRecognition = null;
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) {
+    $('voiceStatus').textContent = 'Seslendirme desteklenmiyor.';
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'tr-TR';
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  utterance.onstart = () => {
+    $('voiceStatus').textContent = 'Asistan konuşuyor...';
+  };
+
+  utterance.onend = () => {
+    $('voiceStatus').textContent = 'Sesli asistan hazır.';
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function startVoice() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    $('voiceStatus').textContent =
+      'Bu WebView sesli tanımayı desteklemiyor. Android bağlantısı gerekiyor.';
+    return;
+  }
+
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.lang = 'tr-TR';
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = false;
+
+  voiceRecognition.onstart = () => {
+    $('voiceStatus').textContent = 'Seni dinliyorum...';
+  };
+
+  voiceRecognition.onresult = (event) => {
+    $('chatInput').value =
+      event.results[0][0].transcript;
+    sendChat();
+  };
+
+  voiceRecognition.onerror = () => {
+    $('voiceStatus').textContent =
+      'Mikrofon kullanılamadı. İzinleri kontrol et.';
+  };
+
+  voiceRecognition.onend = () => {
+    if ($('voiceStatus').textContent === 'Seni dinliyorum...') {
+      $('voiceStatus').textContent = 'Dinleme sona erdi.';
+    }
+  };
+
+  voiceRecognition.start();
+}
+
+function stopVoice() {
+  if (voiceRecognition) {
+    voiceRecognition.stop();
+  }
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  $('voiceStatus').textContent = 'Ses durduruldu.';
+}
 function sendChat(){const input=$('chatInput'),t=input.value.trim();if(!t)return;addBubble(t,true);messages.push({role:'user',content:t});input.value='';let reply='Bunu tercihlerin arasına not edebiliriz. Şu anda bu prototip gerçek bir yapay zekâya bağlı değil. Bir sonraki geliştirme aşamasında bu sohbeti açık kaynaklı bir modele bağlayıp tercihlerini otomatik analiz edeceğiz.';const lower=t.toLocaleLowerCase('tr');if(lower.includes('günlük'))reply='Günlük iş fırsatlarını önceliklendirebiliriz. Gerçek arama bağlantısı kurulduğunda ilan kaynağı, ücret, mesafe ve masraf bilgilerini karşılaştıracağız.';else if(lower.includes('uzaktan')||lower.includes('internet'))reply='Uzaktan iş ve internetten kazanç fırsatlarını da kapsama alacağız; bunlar için 50 km sınırını uygulamayacağız.';else if(lower.includes('konya'))reply='Konya merkezini arama noktası olarak kullanmak istiyorsan Otomasyon bölümündeki konum alanına yazıp kaydedebilirsin.';messages.push({role:'assistant',content:reply});localStorage.setItem('fa_chat',JSON.stringify(messages));setTimeout(()=>addBubble(reply),250)}
 function saveSettings(){const s={location:$('location').value.trim(),radius:$('radius').value,types:$('types').value,frequency:$('frequency').value};localStorage.setItem('fa_settings',JSON.stringify(s));$('settingsStatus').textContent='Tercihler bu cihazda kaydedildi.'}
 function loadSettings(){const s=JSON.parse(localStorage.getItem('fa_settings')||'{}');if(s.location)$('location').value=s.location;if(s.radius)$('radius').value=s.radius;if(s.types)$('types').value=s.types;if(s.frequency)$('frequency').value=s.frequency}
