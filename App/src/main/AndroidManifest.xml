@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:icon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:label="Fırsat Avcısı AI"
         android:theme="@android:style/Theme.Material.NoActionBar"
