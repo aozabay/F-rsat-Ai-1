@@ -60,12 +60,22 @@ public class MainActivity extends Activity {
 
             webView.setWebViewClient(new WebViewClient());
             webView.setWebChromeClient(new WebChromeClient());
+            webView.setWebChromeClient(new WebChromeClient() {
+    @Override
+    public void onPermissionRequest(
+            android.webkit.PermissionRequest request) {
+        runOnUiThread(() -> {
+            request.grant(request.getResources());
+        });
+    }
+});
             webView.loadUrl("file:///android_asset/index.html");
 
             setContentView(webView, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             ));
+            izinleriIste();
         }, 2000);
     }
     private void izinleriIste() {
