@@ -1,6 +1,11 @@
 package com.firsatavcisi.ai;
 
 import android.app.Activity;
+import androidx.appcompat.app.CompatActivity;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +21,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 
 public class MainActivity extends Activity {
+    private static final int REQUEST_PERMISSIONS = 100;
     private WebView webView;
     private ImageView splash;
     private final Handler handler = new Handler(Looper.getMainLooper());
