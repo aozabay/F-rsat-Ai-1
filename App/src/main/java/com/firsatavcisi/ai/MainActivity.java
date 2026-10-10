@@ -68,6 +68,16 @@ public class MainActivity extends Activity {
             ));
         }, 2000);
     }
+    private void izinleriIste() {
+    String[] izinler = {
+        Manifest.permission.CAMERA,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
+    requestPermissions(izinler, REQUEST_PERMISSIONS);
+    }
 
     @Override
     public void onBackPressed() {
