@@ -40,7 +40,13 @@ h2{font-size:20px;margin:0 0 6px}.sub{color:var(--muted);margin:0 0 16px;font-si
 
 <section id="chat" class="page">
 <h2>Kişisel yapay zekâ</h2><p class="sub">İş tercihlerini konuşarak belirle. Bu prototip sohbetleri cihazında tutar.</p>
-<div class="card"><div class="chatbox" id="chatbox"><div class="bubble">Merhaba! Para kazanma fırsatlarını birlikte düzenleyebiliriz. Ne tür işleri yapabileceğini, hangi araçlara veya becerilere sahip olduğunu ve hangi fırsatlardan kaçınmak istediğini anlatabilirsin.</div></div><div class="chatrow"><input id="chatInput" placeholder="Örn. Günlük iş de olur, internet işi de..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn" onclick="sendChat()">Gönder</button></div></div>
+<div class="card"><div class="chatbox" id="chatbox"><div class="bubble">Merhaba! Para kazanma fırsatlarını birlikte düzenleyebiliriz. Ne tür işleri yapabileceğini, hangi araçlara veya becerilere sahip olduğunu ve hangi fırsatlardan kaçınmak istediğini anlatabilirsin.</div></div><div class="chatrow">
+  <input id="chatInput" placeholder="Konuş veya mesaj yaz..." onkeydown="if(event.key==='Enter')sendChat()">
+  <button class="btn" onclick="sendChat()">Gönder</button>
+  <button class="btn secondary" onclick="startVoice()" title="Sesli komut">🎤</button>
+</div>
+<button class="btn secondary small" onclick="stopVoice()">🔇 Sesi durdur</button>
+<p id="voiceStatus" class="muted">Sesli asistan hazır.</p></div>
 <div class="notice">Not: Şimdilik bu, gerçek bir dil modeli değil; sohbet arayüzü prototipidir. Gerçek AI için sonradan yerel model veya çevrim içi API bağlanabilir.</div>
 </section>
 
