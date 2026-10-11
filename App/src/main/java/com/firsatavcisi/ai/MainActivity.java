@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
     private GeolocationPermissions.Callback pendingGeoCallback;
     private String pendingGeoOrigin;
     private boolean permissionDialogInProgress = false;
+    private File pendingUpdateFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
