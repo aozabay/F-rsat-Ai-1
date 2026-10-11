@@ -35,6 +35,16 @@ jobs:
 
       - name: Build debug APK
         run: gradle assembleDebug
+        
+      - name: Verify APK signature
+        run: |
+          APK=$(find . -path '*/build/outputs/apk/debug/*.apk' -print -quit)
+          if [ -z "$APK" ]; then
+            echo "APK bulunamadı!"
+            exit 1
+          fi
+          echo "APK: $APK"
+          $ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs "$APK"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
