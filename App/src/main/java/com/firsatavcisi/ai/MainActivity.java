@@ -339,6 +339,233 @@ public class MainActivity extends Activity {
             super.onBackPressed();
         }
     }
+        private void checkForUpdates() {
+        new Thread(() -> {
+            HttpURLConnection connection = null;
+
+            try {
+                URL url = new URL(
+                    "https://api.github.com/repos/aozabay/F-rsat-Ai-1/releases/latest"
+                );
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
+                connection.setRequestProperty(
+                    "Accept", "application/vnd.github+json"
+                );
+                connection.setRequestProperty(
+                    "User-Agent", "Firsat-Avcisi-AI"
+                );
+
+                if (connection.getResponseCode() != 200) {
+                    return;
+                }
+
+                java.util.Scanner scanner =
+                    new java.util.Scanner(connection.getInputStream())
+                        .useDelimiter("\\A");
+
+                String response = scanner.hasNext()
+                    ? scanner.next() : "";
+                scanner.close();
+
+                JSONObject release = new JSONObject(response);
+                String latestVersion =
+                    release.optString("tag_name", "").replaceFirst("^v", "");
+
+                String currentVersion = getPackageManager()
+                    .getPackageInfo(getPackageName(), 0).versionName;
+
+                if (compareVersions(latestVersion, currentVersion) <= 0) {
+                    return;
+                }
+
+                JSONArray assets = release.optJSONArray("assets");
+                String downloadUrl = "";
+
+                if (assets != null) {
+                    for (int i = 0; i < assets.length(); i++) {
+                        JSONObject asset = assets.getJSONObject(i);
+                        String name = asset.optString("name", "");
+
+                        if (name.toLowerCase().endsWith(".apk")) {
+                            downloadUrl = asset.optString(
+                                "browser_download_url", ""
+                            );
+                            break;
+                        }
+                    }
+                }
+
+                if (downloadUrl.isEmpty()) {
+                    return;
+                }
+
+                final String apkUrl = downloadUrl;
+
+                runOnUiThread(() -> new AlertDialog.Builder(this)
+                    .setTitle("Yeni sürüm mevcut")
+                    .setMessage(
+                        "Fırsat Avcısı AI " + latestVersion
+                        + " sürümü yayımlandı. Güncellemek ister misin?"
+                    )
+                    .setNegativeButton("Daha sonra", null)
+                    .setPositiveButton("İndir", (dialog, which) ->
+                        downloadUpdate(apkUrl)
+                    )
+                    .show());
+
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(
+                    this,
+                    "Güncelleme kontrolü yapılamadı.",
+                    Toast.LENGTH_SHORT
+                ).show());
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        }).start();
+    }
+
+    private int compareVersions(String first, String second) {
+        try {
+            String[] a = first.split("\\.");
+            String[] b = second.split("\\.");
+            int length = Math.max(a.length, b.length);
+
+            for (int i = 0; i < length; i++) {
+                int x = i < a.length ? Integer.parseInt(a[i]) : 0;
+                int y = i < b.length ? Integer.parseInt(b[i]) : 0;
+
+                if (x != y) {
+                    return Integer.compare(x, y);
+                }
+            }
+        } catch (Exception e) {
+            return first.compareTo(second);
+        }
+
+        return 0;
+    }
+
+    private void downloadUpdate(String apkUrl) {
+        Toast.makeText(
+            this, "Güncelleme indiriliyor...", Toast.LENGTH_SHORT
+        ).show();
+
+        new Thread(() -> {
+            HttpURLConnection connection = null;
+
+            try {
+                File folder = new File(getCacheDir(), "updates");
+                if (!folder.exists() && !folder.mkdirs()) {
+                    throw new Exception("Klasör oluşturulamadı");
+                }
+
+                File apkFile = new File(folder, "app-update.apk");
+
+                connection = (HttpURLConnection)
+                    new URL(apkUrl).openConnection();
+                connection.setConnectTimeout(15000);
+                connection.setReadTimeout(30000);
+
+                if (connection.getResponseCode() != 200) {
+                    throw new Exception("İndirme başarısız");
+                }
+
+                try (InputStream input = connection.getInputStream();
+                     FileOutputStream output =
+                         new FileOutputStream(apkFile)) {
+
+                    byte[] buffer = new byte[8192];
+                    int count;
+
+                    while ((count = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, count);
+                    }
+                }
+
+                runOnUiThread(() -> {
+                    pendingUpdateFile = apkFile;
+                    installDownloadedUpdate();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(
+                    this,
+                    "İndirme başarısız oldu. Tekrar deneyebilirsin.",
+                    Toast.LENGTH_LONG
+                ).show());
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        }).start();
+    }
+
+    private void installDownloadedUpdate() {
+        if (pendingUpdateFile == null || !pendingUpdateFile.exists()) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= 26
+                && !getPackageManager().canRequestPackageInstalls()) {
+            new AlertDialog.Builder(this)
+                .setTitle("Kurulum izni gerekli")
+                .setMessage(
+                    "Güncellemeyi kurabilmek için bu uygulamaya "
+                    + "bilinmeyen uygulama yükleme izni vermelisin."
+                )
+                .setNegativeButton("İptal", null)
+                .setPositiveButton("Ayarları aç", (dialog, which) -> {
+                    Intent intent = new Intent(
+                        Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        Uri.parse("package:" + getPackageName())
+                    );
+                    startActivity(intent);
+                })
+                .show();
+            return;
+        }
+
+        try {
+            Uri apkUri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                pendingUpdateFile
+            );
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(
+                apkUri, "application/vnd.android.package-archive"
+            );
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
+
+        } catch (Exception e) {
+            Toast.makeText(
+                this,
+                "Kurulum ekranı açılamadı.",
+                Toast.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (pendingUpdateFile != null
+                && Build.VERSION.SDK_INT >= 26
+                && getPackageManager().canRequestPackageInstalls()) {
+            installDownloadedUpdate();
+        }
+    }
 
     @Override
     protected void onDestroy() {
