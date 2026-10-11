@@ -170,6 +170,7 @@ public class MainActivity extends Activity {
             webView.loadUrl(
                 "file:///android_asset/index.html"
             );
+            checkForUpdates();
 
         }, 2000);
     }
