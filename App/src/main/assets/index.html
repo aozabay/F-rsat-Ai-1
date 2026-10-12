@@ -771,8 +771,8 @@ function startVoice() {
   };
 
   voiceRecognition.onend = () => {
-    if ($('voiceStatus').textContent === 'Seni dinliyorum...') {
-      $('voiceStatus').textContent = 'Dinleme sona erdi.';
+    if (setOrbState('', 'Sesli asistan hazır.');) {
+      $(setOrbState('', 'Dinleme sona erdi.');)
     }
   };
 
