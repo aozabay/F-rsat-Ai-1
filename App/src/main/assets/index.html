@@ -717,7 +717,7 @@ function speakText(text) {
   utterance.pitch = 1;
 
   utterance.onstart = () => {
-    $('voiceStatus').textContent = 'Asistan konuşuyor...';
+    setOrbState('speaking', 'Asistan konuşuyor...');
   };
 
   utterance.onend = () => {
