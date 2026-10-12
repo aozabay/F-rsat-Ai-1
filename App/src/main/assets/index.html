@@ -726,7 +726,19 @@ function speakText(text) {
 
   window.speechSynthesis.speak(utterance);
 }
+function setOrbState(state, message) {
+  const orb = document.getElementById('aiOrb');
+  const status = document.getElementById('voiceStatus');
 
+  if (orb) {
+    orb.classList.remove('listening', 'thinking', 'speaking');
+    if (state) orb.classList.add(state);
+  }
+
+  if (status && message) {
+    status.textContent = message;
+  }
+}
 function startVoice() {
   const SpeechRecognition =
     window.SpeechRecognition ||
