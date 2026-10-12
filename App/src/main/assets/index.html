@@ -725,8 +725,8 @@ function speakText(text) {
   };
 
   utterance.onend = () => {
-    $('voiceStatus').textContent = 'Sesli asistan hazır.';
-  };
+  setOrbState('', 'Sesli asistan hazır.');
+};
 
   window.speechSynthesis.speak(utterance);
 }
