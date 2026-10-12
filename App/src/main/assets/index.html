@@ -688,19 +688,22 @@ const $=id=>document.getElementById(id);
 function setOrbState(state, message) {
   const orb = $('aiOrb');
   const status = $('aiStatus');
+  const voiceStatus = $('voiceStatus');
 
   if (orb) {
-    orb.classList.remove('listening', 'thinking');
+    orb.classList.remove('listening', 'thinking', 'speaking');
 
-    if (state === 'listening') {
-      orb.classList.add('listening');
-    } else if (state === 'thinking') {
-      orb.classList.add('thinking');
+    if (state) {
+      orb.classList.add(state);
     }
   }
 
   if (status && message) {
     status.textContent = message;
+  }
+
+  if (voiceStatus && message) {
+    voiceStatus.textContent = message;
   }
 }
 let opportunities=JSON.parse(localStorage.getItem('fa_opps')||'[]');
