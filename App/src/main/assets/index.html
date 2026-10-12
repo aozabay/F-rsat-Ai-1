@@ -189,15 +189,19 @@ input, textarea, select {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 76px;
-  height: 76px;
+  width: 100px;
+  height: 100px;
   margin: 0 auto 18px;
   border: 1px solid rgba(40, 215, 255, 0.65);
   border-radius: 24px;
-  background: linear-gradient(135deg, #00d9ff, #075cff 70%, #1727a8);
+  background: #071329;
   box-shadow: 0 0 35px rgba(0, 140, 255, 0.45);
-  color: #fff;
-  font-size: 46px;
+  overflow: hidden;
+}
+.welcome-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .welcome-content h1 {
@@ -333,7 +337,10 @@ input, textarea, select {
   <!-- FIRSAT AVCISI AI AÇILIŞ EKRANI -->
 <section id="welcomeScreen" class="welcome-screen">
   <div class="welcome-content">
-    <div class="welcome-logo">✦</div>
+    <div class="welcome-logo">
+  <img src="logo.png" alt="Fırsat Avcısı AI"
+       style="width:100%;height:100%;object-fit:contain;border-radius:22px;">
+</div>
     <h1>Fırsat Avcısı <span>AI</span></h1>
     <p class="welcome-subtitle">Fırsatları keşfet. Geleceğini şekillendir.</p>
 
