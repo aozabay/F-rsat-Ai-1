@@ -744,15 +744,23 @@ function speakText(text) {
 }
 function setOrbState(state, message) {
   const orb = document.getElementById('aiOrb');
-  const status = document.getElementById('voiceStatus');
+  const status = document.getElementById('aiStatus');
+  const voiceStatus = document.getElementById('voiceStatus');
 
   if (orb) {
     orb.classList.remove('listening', 'thinking', 'speaking');
-    if (state) orb.classList.add(state);
+
+    if (state) {
+      orb.classList.add(state);
+    }
   }
 
   if (status && message) {
     status.textContent = message;
+  }
+
+  if (voiceStatus && message) {
+    voiceStatus.textContent = message;
   }
 }
 function startVoice() {
