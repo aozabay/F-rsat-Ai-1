@@ -161,9 +161,202 @@ input, textarea, select {
   color: #ffffff;
 }
 }
+/* FIRSAT AVCISI AI - AÇILIŞ EKRANI */
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 24px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(0, 110, 255, 0.25), transparent 55%),
+    linear-gradient(160deg, #102957 0%, #071329 48%, #030714 100%);
+  color: #f3f7ff;
+  text-align: center;
+}
+
+.welcome-content {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+}
+
+.welcome-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 18px;
+  border: 1px solid rgba(40, 215, 255, 0.65);
+  border-radius: 24px;
+  background: linear-gradient(135deg, #00d9ff, #075cff 70%, #1727a8);
+  box-shadow: 0 0 35px rgba(0, 140, 255, 0.45);
+  color: #fff;
+  font-size: 46px;
+}
+
+.welcome-content h1 {
+  margin: 0;
+  color: #f3f7ff;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.welcome-content h1 span {
+  color: #28d7ff;
+}
+
+.welcome-subtitle {
+  margin: 10px 0 0;
+  color: #a9c5ef;
+  font-size: 14px;
+}
+
+.welcome-art {
+  position: relative;
+  height: 190px;
+  margin: 22px 0;
+  overflow: hidden;
+  border: 1px solid rgba(40, 215, 255, 0.25);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(0, 120, 255, 0.38), transparent 60%),
+    linear-gradient(180deg, rgba(8, 28, 65, 0.35), rgba(3, 8, 24, 0.8));
+}
+
+.art-orbit {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  border: 1px solid rgba(40, 215, 255, 0.3);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.orbit-one {
+  width: 150px;
+  height: 150px;
+}
+
+.orbit-two {
+  top: 48px;
+  width: 105px;
+  height: 105px;
+  border-color: rgba(0, 140, 255, 0.5);
+}
+
+.art-star {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  color: #28d7ff;
+  font-size: 54px;
+  text-shadow: 0 0 25px #078cff;
+}
+
+.art-horizon {
+  position: absolute;
+  right: 0;
+  bottom: 34px;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #28d7ff, transparent);
+  box-shadow: 0 0 18px #078cff;
+}
+
+.art-road {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  width: 130px;
+  height: 110px;
+  border: 1px solid rgba(40, 215, 255, 0.55);
+  transform: translateX(-50%) perspective(80px) rotateX(25deg);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 15px,
+    rgba(40, 215, 255, 0.12) 16px 17px
+  );
+}
+
+.welcome-content h2 {
+  margin: 18px 0 8px;
+  color: #f3f7ff;
+  font-size: 23px;
+}
+
+.welcome-description {
+  margin: 0 auto 24px;
+  max-width: 310px;
+  color: #a9bde0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.welcome-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(100deg, #00bfff, #075cff);
+  box-shadow: 0 8px 28px rgba(0, 120, 255, 0.3);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.welcome-button span {
+  font-size: 22px;
+}
+
+.welcome-footer {
+  margin: 22px 0 0;
+  color: #6f91c6;
+  font-size: 10px;
+  letter-spacing: 2px;
+  }
 </style>
 </head>
 <body>
+  <!-- FIRSAT AVCISI AI AÇILIŞ EKRANI -->
+<section id="welcomeScreen" class="welcome-screen">
+  <div class="welcome-content">
+    <div class="welcome-logo">✦</div>
+    <h1>Fırsat Avcısı <span>AI</span></h1>
+    <p class="welcome-subtitle">Fırsatları keşfet. Geleceğini şekillendir.</p>
+
+    <div class="welcome-art">
+      <div class="art-orbit orbit-one"></div>
+      <div class="art-orbit orbit-two"></div>
+      <div class="art-star">✦</div>
+      <div class="art-horizon"></div>
+      <div class="art-road"></div>
+    </div>
+
+    <h2>Fırsatlar seni bekliyor!</h2>
+    <p class="welcome-description">
+      İş, ticaret ve kazanç fırsatlarını tek yerde keşfet.
+    </p>
+
+    <button class="welcome-button" onclick="enterApp()">
+      Hemen Başla <span>→</span>
+    </button>
+
+    <p class="welcome-footer">GÜVENLİ · KİŞİSEL · SENİN İÇİN</p>
+  </div>
+</section>
 <div class="app">
 <header class="top"><div class="brand"><div class="logo">✦</div><div><h1>Fırsat Avcısı AI</h1><p>Kişisel kazanç fırsatları asistanın</p></div></div><span class="badge">Açık kaynak taslak</span></header>
 
@@ -221,6 +414,9 @@ input, textarea, select {
 <button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Ayarlar</button>
 </nav>
 <script>
+  function enterApp() {
+  document.getElementById('welcomeScreen').style.display = 'none';
+  }
 const $=id=>document.getElementById(id);
 let opportunities=JSON.parse(localStorage.getItem('fa_opps')||'[]');
 let messages=JSON.parse(localStorage.getItem('fa_chat')||'[]');
