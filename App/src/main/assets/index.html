@@ -84,6 +84,47 @@ img {
 }
 
 ::selection {
+  /* MODERN MAVI TEMA */
+:root {
+  color-scheme: dark;
+  --bg: #070b18;
+  --panel: #0e1730;
+  --panel-light: #142344;
+  --panel2: #142344;
+  --accent: #168cff;
+  --accent2: #58b6ff;
+  --blue: #168cff;
+  --cyan: #58b6ff;
+  --text: #f3f6ff;
+  --muted: #a6b2ca;
+  --line: #24385f;
+  --border: rgba(88, 182, 255, 0.25);
+  --warn: #58b6ff;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+button {
+  border-color: var(--border);
+}
+
+input, textarea, select {
+  background-color: var(--panel);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+a {
+  color: var(--accent2);
+}
+
+::selection {
+  background: #168cff;
+  color: #ffffff;
+}
   background: #2563eb;
   color: #fff;
 }
