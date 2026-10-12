@@ -410,13 +410,17 @@ input, textarea, select {
   color: #72ffdf;
 }
 
-.ai-orb.thinking {
-  border-color: #a78bfa;
-  box-shadow: 0 0 25px #8b5cf6, 0 0 60px #075cff;
+.ai-orb.speaking {
+  border-color: #29d7ff;
+  box-shadow:
+    0 0 25px #29d7ff,
+    0 0 65px #087cff,
+    inset 0 0 35px #087cff;
 }
-
-.ai-orb.thinking .ai-orb-core {
-  color: #c4b5fd;
+.ai-orb.speaking .ai-orb-core {
+  color: #ffffff;
+  text-shadow: 0 0 22px #29d7ff;
+  }
 }
 
 @keyframes orbFloat {
