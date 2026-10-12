@@ -87,46 +87,78 @@ img {
   /* MODERN MAVI TEMA */
 :root {
   color-scheme: dark;
-  --bg: #070b18;
-  --panel: #0e1730;
-  --panel-light: #142344;
-  --panel2: #142344;
-  --accent: #168cff;
-  --accent2: #58b6ff;
-  --blue: #168cff;
-  --cyan: #58b6ff;
-  --text: #f3f6ff;
-  --muted: #a6b2ca;
-  --line: #24385f;
-  --border: rgba(88, 182, 255, 0.25);
+  --bg: #050b1b;
+  --panel: #0b1731;
+  --panel2: #102448;
+  --accent: #078cff;
+  --accent2: #28d7ff;
+  --blue: #087cff;
+  --cyan: #28d7ff;
+  --text: #f3f7ff;
+  --muted: #9db9e8;
+  --line: #153b75;
+  --border: rgba(40, 215, 255, 0.35);
   --warn: #58b6ff;
 }
 
 body {
-  background-color: var(--bg);
+  background: radial-gradient(ellipse at top, #102e68 0%, #050b1b 55%);
   color: var(--text);
 }
 
-button {
+.hero {
+  background: linear-gradient(145deg, #102957, #071329 80%);
   border-color: var(--border);
+  box-shadow: 0 0 28px rgba(0, 120, 255, 0.12);
+}
+
+.card {
+  background: rgba(10, 23, 48, 0.96);
+  border-color: var(--border);
+}
+
+.logo {
+  background: linear-gradient(135deg, #00d9ff, #075cff 65%, #1727a8);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 140, 255, 0.55);
+}
+
+.btn {
+  background: linear-gradient(100deg, #00bfff, #075cff);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(0, 140, 255, 0.2);
+}
+
+.btn.secondary {
+  background: #0a1b39;
+  border: 1px solid var(--border);
+  color: var(--text);
+  box-shadow: none;
 }
 
 input, textarea, select {
-  background-color: var(--panel);
+  background: #071329;
   color: var(--text);
   border-color: var(--border);
 }
 
-a {
-  color: var(--accent2);
+.nav {
+  background: rgba(5, 11, 27, 0.96);
+  border-color: var(--border);
+}
+
+.nav button.active {
+  color: var(--cyan);
+}
+
+.tag.green {
+  background: #082d52;
+  color: var(--cyan);
 }
 
 ::selection {
-  background: #168cff;
+  background: #087cff;
   color: #ffffff;
-}
-  background: #2563eb;
-  color: #fff;
 }
 </style>
 </head>
