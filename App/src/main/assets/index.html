@@ -756,7 +756,7 @@ function startVoice() {
   voiceRecognition.interimResults = false;
 
   voiceRecognition.onstart = () => {
-    $('voiceStatus').textContent = 'Seni dinliyorum...';
+    setOrbState('listening', 'Seni dinliyorum...');
   };
 
   voiceRecognition.onresult = (event) => {
