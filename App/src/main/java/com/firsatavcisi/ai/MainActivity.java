@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 
         try {
             Bitmap bitmap = BitmapFactory.decodeStream(
-                getAssets().open("acilis.png")
+                getAssets().open("logo.png")
             );
             splash.setImageBitmap(bitmap);
         } catch (Exception e) {
