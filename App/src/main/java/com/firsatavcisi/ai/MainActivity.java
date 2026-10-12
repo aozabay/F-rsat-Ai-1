@@ -360,7 +360,9 @@ public class MainActivity extends Activity {
                     "User-Agent", "Firsat-Avcisi-AI"
                 );
 
-                if (connection.getResponseCode() != 200) {
+                int responseCode = connection.getResponseCode();
+
+                if (responseCode != 200) {
                     return;
                 }
 
@@ -421,7 +423,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
                 runOnUiThread(() -> Toast.makeText(
                     this,
-                    "Güncelleme kontrolü yapılamadı.",
+                    "Güncelleme hatası: " + e.getMessage(),
                     Toast.LENGTH_SHORT
                 ).show());
             } finally {
