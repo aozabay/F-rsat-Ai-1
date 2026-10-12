@@ -750,8 +750,7 @@ function startVoice() {
     window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    $('voiceStatus').textContent =
-      'Bu WebView sesli tanımayı desteklemiyor. Android bağlantısı gerekiyor.';
+    setOrbState('', 'Bu WebView sesli tanımayı desteklemiyor.');
     return;
   }
 
@@ -765,19 +764,18 @@ function startVoice() {
   };
 
   voiceRecognition.onresult = (event) => {
-    $('chatInput').value =
-      event.results[0][0].transcript;
+    $('chatInput').value = event.results[0][0].transcript;
+    setOrbState('thinking', 'Yanıt hazırlanıyor...');
     sendChat();
   };
 
   voiceRecognition.onerror = () => {
-    $('voiceStatus').textContent =
-  'Mikrofon kullanılamadı. İzinleri kontrol et.';
+    setOrbState('', 'Mikrofon kullanılamadı. İzinleri kontrol et.');
   };
 
   voiceRecognition.onend = () => {
-    if (setOrbState('', 'Sesli asistan hazır.');) {
-      $(setOrbState('', 'Dinleme sona erdi.');)
+    if ($('voiceStatus').textContent === 'Seni dinliyorum...') {
+      setOrbState('', 'Dinleme sona erdi.');
     }
   };
 
