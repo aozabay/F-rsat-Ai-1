@@ -40,6 +40,11 @@ jobs:
         run: |
           $ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs App-debug-1.apk
 
+      - name: Verify new APK signature
+        run: |
+          APK=$(find . -path '*/build/outputs/apk/debug/*.apk' -type f | head -n 1)
+          echo "APK file: $APK"
+          $ANDROID_HOME/build-tools/35.0.0/apksigner verify --print-certs "$APK"
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
