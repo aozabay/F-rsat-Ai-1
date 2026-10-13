@@ -824,5 +824,98 @@ const oldMessages=messages;if(oldMessages.length){oldMessages.forEach(m=>addBubb
 persist();renderHome();renderOpps();loadSettings();
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
+
+<!-- FIRSAT AVCISI UYELIK EKRANI -->
+<section id="membershipPage" style="
+display:none; position:fixed; inset:0; z-index:9999;
+overflow-y:auto; padding:28px 20px;
+background:linear-gradient(145deg,#071126,#101f42,#06101f);
+color:#fff; font-family:Arial,sans-serif; box-sizing:border-box;">
+  <div style="max-width:420px;margin:30px auto;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:48px;">🔷</div>
+      <h1 style="color:#35c8ff;margin:10px 0;">Fırsat Avcısı</h1>
+      <p style="color:#a8bad7;">Üyeliğini oluştur, fırsatları keşfet.</p>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:22px;">
+      <button type="button" onclick="showMemberForm('register')" style="
+      flex:1;padding:13px;border:0;border-radius:10px;
+      background:#168bff;color:white;font-weight:bold;">Üye Ol</button>
+      <button type="button" onclick="showMemberForm('login')" style="
+      flex:1;padding:13px;border:1px solid #2873ad;border-radius:10px;
+      background:#102344;color:white;font-weight:bold;">Giriş Yap</button>
+    </div>
+
+    <form id="memberRegisterForm">
+      <label>Ad Soyad</label>
+      <input id="memberName" required autocomplete="name"
+      placeholder="Adınız ve soyadınız" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <label>E-posta</label>
+      <input id="memberEmail" type="email" required autocomplete="email"
+      placeholder="ornek@mail.com" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <label>Şifre</label>
+      <input id="memberPassword" type="password" required minlength="8" autocomplete="new-password"
+      placeholder="En az 8 karakter" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <label>Şifre Tekrarı</label>
+      <input id="memberPassword2" type="password" required minlength="8" autocomplete="new-password"
+      placeholder="Şifrenizi tekrar yazın" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <button type="submit" style="width:100%;padding:15px;border:0;border-radius:10px;background:linear-gradient(90deg,#087cff,#20c7ff);color:white;font-size:16px;font-weight:bold;">Üyelik Oluştur</button>
+    </form>
+
+    <form id="memberLoginForm" style="display:none;">
+      <label>E-posta</label>
+      <input id="loginEmail" type="email" required autocomplete="email"
+      placeholder="E-posta adresiniz" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <label>Şifre</label>
+      <input id="loginPassword" type="password" required autocomplete="current-password"
+      placeholder="Şifreniz" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <button type="submit" style="width:100%;padding:15px;border:0;border-radius:10px;background:linear-gradient(90deg,#087cff,#20c7ff);color:white;font-size:16px;font-weight:bold;">Giriş Yap</button>
+    </form>
+
+    <p id="memberMessage" role="status" style="margin-top:18px;text-align:center;color:#55d9ff;"></p>
+  </div>
+</section>
+
+<script>
+function showMemberForm(mode) {
+  document.getElementById('memberRegisterForm').style.display =
+    mode === 'register' ? 'block' : 'none';
+  document.getElementById('memberLoginForm').style.display =
+    mode === 'login' ? 'block' : 'none';
+  document.getElementById('memberMessage').textContent = '';
+}
+
+document.getElementById('memberRegisterForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById('memberName').value.trim();
+  const email = document.getElementById('memberEmail').value.trim().toLowerCase();
+  const password = document.getElementById('memberPassword').value;
+  const password2 = document.getElementById('memberPassword2').value;
+  const msg = document.getElementById('memberMessage');
+
+  if (password !== password2) {
+    msg.textContent = 'Şifreler birbiriyle eşleşmiyor.';
+    return;
+  }
+
+  msg.textContent = 'Bu örnek kayıt sistemi henüz etkinleştirilmedi. Güvenli üyelik için sunucu bağlantısı kurulmalı.';
+});
+
+document.getElementById('memberLoginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  document.getElementById('memberMessage').textContent =
+    'Üye girişi için önce güvenli üyelik sistemi bağlanmalı.';
+});
+</script>
+<!-- UYELIK EKRANI SONU -->
+  
 </body>
 </html>
