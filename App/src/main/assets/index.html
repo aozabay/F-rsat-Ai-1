@@ -883,38 +883,95 @@ color:#fff; font-family:Arial,sans-serif; box-sizing:border-box;">
   </div>
 </section>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL = 'https://ijkondrqjqoizcsdpezr.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_j64alClR7egp0QtoRnqkVA_w_bqYtuu';
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
 function showMemberForm(mode) {
   document.getElementById('memberRegisterForm').style.display =
     mode === 'register' ? 'block' : 'none';
+
   document.getElementById('memberLoginForm').style.display =
     mode === 'login' ? 'block' : 'none';
+
   document.getElementById('memberMessage').textContent = '';
 }
 
-document.getElementById('memberRegisterForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
+document.getElementById('memberRegisterForm')
+  .addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-  const name = document.getElementById('memberName').value.trim();
-  const email = document.getElementById('memberEmail').value.trim().toLowerCase();
-  const password = document.getElementById('memberPassword').value;
-  const password2 = document.getElementById('memberPassword2').value;
-  const msg = document.getElementById('memberMessage');
+    const name = document.getElementById('memberName').value.trim();
+    const email = document.getElementById('memberEmail').value.trim();
+    const password = document.getElementById('memberPassword').value;
+    const password2 = document.getElementById('memberPassword2').value;
+    const msg = document.getElementById('memberMessage');
 
-  if (password !== password2) {
-    msg.textContent = 'Şifreler birbiriyle eşleşmiyor.';
-    return;
-  }
+    if (password !== password2) {
+      msg.textContent = 'Şifreler birbiriyle eşleşmiyor.';
+      return;
+    }
 
-  msg.textContent = 'Bu örnek kayıt sistemi henüz etkinleştirilmedi. Güvenli üyelik için sunucu bağlantısı kurulmalı.';
-});
+    msg.textContent = 'Üyeliğin oluşturuluyor...';
 
-document.getElementById('memberLoginForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  document.getElementById('memberMessage').textContent =
-    'Üye girişi için önce güvenli üyelik sistemi bağlanmalı.';
-});
+    try {
+      const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: { full_name: name }
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.session) {
+        msg.textContent = 'Üyeliğin oluşturuldu!';
+        document.getElementById('membershipPage').style.display = 'none';
+        showPage('home');
+      } else {
+        msg.textContent =
+          'Kayıt isteğin alındı. E-postanı kontrol edip doğrulama bağlantısına dokun.';
+      }
+    } catch (error) {
+      msg.textContent = 'Kayıt hatası: ' + error.message;
+    }
+  });
+
+document.getElementById('memberLoginForm')
+  .addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const msg = document.getElementById('memberMessage');
+
+    msg.textContent = 'Giriş yapılıyor...';
+
+    try {
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) throw error;
+
+      msg.textContent = 'Giriş başarılı!';
+      document.getElementById('membershipPage').style.display = 'none';
+      showPage('home');
+    } catch (error) {
+      msg.textContent = 'Giriş hatası: ' + error.message;
+    }
+  });
 </script>
+
 <!-- UYELIK EKRANI SONU -->
   
 </body>
