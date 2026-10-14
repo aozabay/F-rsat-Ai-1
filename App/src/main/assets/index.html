@@ -775,7 +775,7 @@ let savedProducts = JSON.parse(
 );
 
 function saveProduct(name, url){
-  if(savedProducts.some(p => p.name === name)){
+  if(savedProducts.some(p => p.name === name && p.url === url)){
     alert('Bu ürün zaten kayıtlı.');
     return;
   }
