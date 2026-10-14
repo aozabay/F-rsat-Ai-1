@@ -923,6 +923,46 @@ color:#fff; font-family:Arial,sans-serif; box-sizing:border-box;">
     <p id="memberMessage" role="status" style="margin-top:18px;text-align:center;color:#55d9ff;"></p>
   </div>
 </section>
+<section id="resetPasswordPage" style="
+display:none; position:fixed; inset:0; z-index:10000;
+overflow-y:auto; padding:28px 20px;
+background:linear-gradient(145deg,#071126,#101f42,#06101f);
+color:#fff; font-family:Arial,sans-serif; box-sizing:border-box;">
+
+  <div style="max-width:420px;margin:50px auto;">
+    <div style="text-align:center;">
+      <div style="font-size:48px;">🔐</div>
+      <h1 style="color:#35c8ff;">Yeni Şifre Belirle</h1>
+      <p style="color:#a8bad7;">
+        Hesabın için yeni bir şifre oluştur.
+      </p>
+    </div>
+
+    <form id="newPasswordForm">
+      <label>Yeni Şifre</label>
+      <input id="newPassword" type="password"
+        required minlength="8" autocomplete="new-password"
+        placeholder="En az 8 karakter"
+        style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <label>Yeni Şifre Tekrarı</label>
+      <input id="newPasswordConfirm" type="password"
+        required minlength="8" autocomplete="new-password"
+        placeholder="Şifreni tekrar yaz"
+        style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
+
+      <button type="submit"
+        style="width:100%;padding:15px;border:0;border-radius:10px;background:linear-gradient(90deg,#087cff,#20c7ff);color:white;font-size:16px;font-weight:bold;">
+        Şifremi Güncelle
+      </button>
+    </form>
+
+    <p id="resetPasswordMessage"
+      role="status"
+      style="margin-top:18px;text-align:center;color:#55d9ff;">
+    </p>
+  </div>
+</section>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1015,22 +1055,34 @@ document.getElementById('memberLoginForm')
   supabaseClient.auth.onAuthStateChange((event, session) => {
   window.faAuthSession = session || null;
 
-  const accountEmail = document.getElementById('accountEmail');
-  if (accountEmail) {
-    accountEmail.textContent =
-      session?.user?.email || 'Giriş yapılmadı';
-  }
-
   const welcome = document.getElementById('welcomeScreen');
   const membership = document.getElementById('membershipPage');
+  const resetPage = document.getElementById('resetPasswordPage');
 
-  if (session) {
+  if (event === 'PASSWORD_RECOVERY') {
     if (welcome) welcome.style.display = 'none';
     if (membership) membership.style.display = 'none';
+    if (resetPage) resetPage.style.display = 'block';
+    return;
+  }
+
+  if (session) {
+    const accountEmail = document.getElementById('accountEmail');
+
+    if (accountEmail) {
+      accountEmail.textContent =
+        session.user.email || 'E-posta bulunamadı';
+    }
+
+    if (welcome) welcome.style.display = 'none';
+    if (membership) membership.style.display = 'none';
+    if (resetPage) resetPage.style.display = 'none';
+
     showPage('home');
   } else {
     if (welcome) welcome.style.display = 'none';
     if (membership) membership.style.display = 'block';
+    if (resetPage) resetPage.style.display = 'none';
 
     if (typeof showMemberForm === 'function') {
       showMemberForm('login');
@@ -1065,6 +1117,46 @@ document.getElementById('memberLoginForm')
     msg.textContent = 'Hata: ' + error.message;
   }
   }
+  document.getElementById('newPasswordForm')
+  .addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const password = document.getElementById('newPassword').value;
+    const confirmPassword =
+      document.getElementById('newPasswordConfirm').value;
+    const msg = document.getElementById('resetPasswordMessage');
+
+    if (password !== confirmPassword) {
+      msg.textContent = 'Şifreler birbiriyle eşleşmiyor.';
+      return;
+    }
+
+    try {
+      msg.textContent = 'Şifre güncelleniyor...';
+
+      const { error } = await supabaseClient.auth.updateUser({
+        password: password
+      });
+
+      if (error) throw error;
+
+      msg.textContent =
+        'Şifren başarıyla güncellendi. Şimdi giriş yapabilirsin.';
+
+      document.getElementById('newPasswordForm').reset();
+
+      setTimeout(() => {
+        document.getElementById('resetPasswordPage').style.display = 'none';
+        document.getElementById('membershipPage').style.display = 'block';
+        showMemberForm('login');
+        document.getElementById('memberMessage').textContent =
+          'Şifren güncellendi. Yeni şifrenle giriş yapabilirsin.';
+      }, 1800);
+
+    } catch (error) {
+      msg.textContent = 'Şifre güncellenemedi: ' + error.message;
+    }
+  });
   async function logoutMember() {
   const msg = document.getElementById('memberMessage');
 
