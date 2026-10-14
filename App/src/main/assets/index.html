@@ -981,6 +981,10 @@ document.getElementById('memberLoginForm')
   });
   supabaseClient.auth.onAuthStateChange((event, session) => {
   if (session) {
+    const accountEmail = document.getElementById('accountEmail');
+if (accountEmail) {
+  accountEmail.textContent = session.user.email || 'E-posta bulunamadı';
+}
     const welcome = document.getElementById('welcomeScreen');
     const membership = document.getElementById('membershipPage');
 
