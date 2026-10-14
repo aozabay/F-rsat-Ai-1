@@ -912,6 +912,12 @@ color:#fff; font-family:Arial,sans-serif; box-sizing:border-box;">
       placeholder="Şifreniz" style="width:100%;box-sizing:border-box;padding:14px;margin:8px 0 17px;border-radius:9px;border:1px solid #294a75;background:#0c1930;color:white;">
 
       <button type="submit" style="width:100%;padding:15px;border:0;border-radius:10px;background:linear-gradient(90deg,#087cff,#20c7ff);color:white;font-size:16px;font-weight:bold;">Giriş Yap</button>
+      <p style="text-align:center;margin-top:16px;">
+  <a href="#" onclick="resetMemberPassword();return false;"
+     style="color:#55d9ff;text-decoration:none;">
+    Şifremi Unuttum
+  </a>
+      </p>
     </form>
 
     <p id="memberMessage" role="status" style="margin-top:18px;text-align:center;color:#55d9ff;"></p>
@@ -1031,6 +1037,34 @@ document.getElementById('memberLoginForm')
     }
   }
 });
+  async function resetMemberPassword() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const msg = document.getElementById('memberMessage');
+
+  if (!email) {
+    msg.textContent = 'Lütfen önce e-posta adresini yaz.';
+    document.getElementById('loginEmail').focus();
+    return;
+  }
+
+  try {
+    msg.textContent = 'Sıfırlama bağlantısı gönderiliyor...';
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo: 'https://aozabay.github.io/F-rsat-Ai-1/'
+      }
+    );
+
+    if (error) throw error;
+
+    msg.textContent =
+      'İşlem uygunsa şifre sıfırlama bağlantısı e-posta adresine gönderildi. Gelen kutunu ve spam klasörünü kontrol et.';
+  } catch (error) {
+    msg.textContent = 'Hata: ' + error.message;
+  }
+  }
   async function logoutMember() {
   const msg = document.getElementById('memberMessage');
 
