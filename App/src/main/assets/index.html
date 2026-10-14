@@ -764,6 +764,27 @@ function oppHTML(o,i){return `<div class="opportunity"><div class="row"><span cl
 function renderOpps(){$('allOpportunities').innerHTML=opportunities.length?opportunities.map(oppHTML).join(''):'<div class="empty">Henüz fırsat kaydetmedin.</div>';$('oppCount').textContent=opportunities.length+' fırsat'}
 function renderHome(){$('savedCount').textContent=opportunities.length;$('homeOpportunities').innerHTML=opportunities.length?opportunities.slice(-3).reverse().map((o)=>`<div class="opportunity"><span class="tag">${esc(o.type)}</span><h3>${esc(o.title)}</h3><p>${esc(o.notes||'Not eklenmedi')}</p><b style="color:var(--accent)">${esc(o.money||'Kazanç belirtilmedi')}</b></div>`).join(''):'<div class="empty">Henüz kayıtlı fırsat yok. “Fırsatlar” bölümünden ilk fırsatını ekleyebilirsin.</div>'}
 function addOpportunity(){const title=$('oppTitle').value.trim();if(!title){alert('Lütfen fırsat adını yaz.');return}opportunities.push({title,type:$('oppType').value,money:$('oppMoney').value.trim(),source:$('oppSource').value.trim(),notes:$('oppNotes').value.trim(),created:new Date().toISOString()});persist();['oppTitle','oppMoney','oppSource','oppNotes'].forEach(id=>$(id).value='');renderOpps();renderHome();alert('Fırsat kaydedildi.')}
+function searchProducts(){
+  const input = $('productSearch');
+  const results = $('productResults');
+  const product = input.value.trim();
+
+  if(!product){
+    alert('Lütfen aramak istediğin ürünün adını yaz.');
+    return;
+  }
+
+  const q = encodeURIComponent(product);
+
+  results.innerHTML = `
+    <h3>Ürün arama sonuçları</h3>
+    <p>“${product.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}” için mağazalarda ara:</p>
+    <p><a href="https://www.google.com/search?tbm=shop&q=${q}" target="_blank" rel="noopener">Google Alışveriş'te ara</a></p>
+    <p><a href="https://www.akakce.com/arama/?q=${q}" target="_blank" rel="noopener">Akakçe'de ara</a></p>
+    <p><a href="https://www.trendyol.com/sr?q=${q}" target="_blank" rel="noopener">Trendyol'da ara</a></p>
+    <p><a href="https://www.hepsiburada.com/ara?q=${q}" target="_blank" rel="noopener">Hepsiburada'da ara</a></p>
+  `;
+}
 function removeOpp(i){if(confirm('Bu fırsatı silmek istiyor musun?')){opportunities.splice(i,1);persist();renderOpps();renderHome()}}
 function addBubble(text,me=false){const d=document.createElement('div');d.className='bubble'+(me?' me':'');d.textContent=text;$('chatbox').appendChild(d);$('chatbox').scrollTop=$('chatbox').scrollHeight}
   let voiceRecognition = null;
