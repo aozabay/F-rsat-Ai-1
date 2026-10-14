@@ -991,6 +991,18 @@ function clearData(){if(confirm('Bu cihazdaki fırsatları, sohbetleri ve tercih
 const oldMessages=messages;if(oldMessages.length){oldMessages.forEach(m=>addBubble(m.content,m.role==='user'))}
 persist();renderHome();renderOpps();loadSettings();
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+document.addEventListener('DOMContentLoaded', function(){
+  const savedSearch = localStorage.getItem('fa_product_search');
+  const searchInput = document.getElementById('productSearch');
+
+  if (savedSearch && searchInput) {
+    searchInput.value = savedSearch;
+  }
+
+  if (typeof renderSavedProducts === 'function') {
+    renderSavedProducts();
+  }
+});
 </script>
 
 <!-- FIRSAT AVCISI UYELIK EKRANI -->
