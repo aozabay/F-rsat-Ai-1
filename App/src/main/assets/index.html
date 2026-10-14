@@ -631,6 +631,20 @@ input, textarea, select {
 </section>
 
 <section id="opportunities" class="page">
+<div class="card">
+  <h2>🔎 Ürün ve Fiyat Ara</h2>
+  <p class="sub">Aradığın ürünü yaz, fiyatlarını karşılaştır.</p>
+
+  <label>Ürün adı</label>
+  <input id="productSearch"
+         placeholder="Örn. kablosuz kulaklık">
+
+  <button class="btn" onclick="searchProducts()">
+    Ürün Ara
+  </button>
+
+  <div id="productResults"></div>
+</div>
 <h2>Fırsat defteri</h2><p class="sub">Bulduğun fırsatları kaydet, not ekle ve durumlarını takip et.</p>
 <div class="card"><label>Fırsat adı</label><input id="oppTitle" placeholder="Örn. Mobilya montaj işi"><label>Tür</label><select id="oppType"><option>Günlük iş</option><option>Hizmet / ustalık</option><option>Alım satım</option><option>Komisyon</option><option>Uzaktan iş</option><option>Proje / freelance</option><option>Diğer</option></select><label>Beklenen kazanç (isteğe bağlı)</label><input id="oppMoney" placeholder="Örn. 1500 TL"><label>Kaynak veya iletişim</label><input id="oppSource" placeholder="İlan bağlantısı / telefon / işletme"><label>Notlar</label><textarea id="oppNotes" placeholder="Mesafe, masraf, şartlar..."></textarea><button class="btn" onclick="addOpportunity()">Fırsatı kaydet</button></div>
 <div class="card"><div class="row"><h2>Kaydedilenler</h2><span class="tag" id="oppCount">0 fırsat</span></div><div id="allOpportunities"></div></div>
