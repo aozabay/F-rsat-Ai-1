@@ -971,6 +971,17 @@ document.getElementById('memberLoginForm')
       msg.textContent = 'Giriş hatası: ' + error.message;
     }
   });
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    const welcome = document.getElementById('welcomeScreen');
+    const membership = document.getElementById('membershipPage');
+
+    if (welcome) welcome.style.display = 'none';
+    if (membership) membership.style.display = 'none';
+
+    showPage('home');
+  }
+});
 </script>
 
 <!-- UYELIK EKRANI SONU -->
