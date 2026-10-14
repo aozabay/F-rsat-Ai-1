@@ -831,6 +831,7 @@ function searchProducts(){
     return;
   }
 
+  localStorage.setItem('fa_product_search', product);
   const q = encodeURIComponent(product);
   const safeProduct = product
     .replace(/&/g,'&amp;')
