@@ -15,7 +15,11 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-
+      - name: Sync web page to Android assets
+        run: |
+          test -f index.html
+          mkdir -p App/src/main/assets
+          cp index.html App/src/main/assets/index.html
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
