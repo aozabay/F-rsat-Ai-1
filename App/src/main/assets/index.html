@@ -775,14 +775,51 @@ function searchProducts(){
   }
 
   const q = encodeURIComponent(product);
+  const safeProduct = product
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+
+  const stores = [
+    {
+      name:'Google Alışveriş',
+      url:'https://www.google.com/search?tbm=shop&q=' + q
+    },
+    {
+      name:'Akakçe',
+      url:'https://www.akakce.com/arama/?q=' + q
+    },
+    {
+      name:'Trendyol',
+      url:'https://www.trendyol.com/sr?q=' + q
+    },
+    {
+      name:'Hepsiburada',
+      url:'https://www.hepsiburada.com/ara?q=' + q
+    }
+  ];
 
   results.innerHTML = `
-    <h3>Ürün arama sonuçları</h3>
-    <p>“${product.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}” için mağazalarda ara:</p>
-    <p><a href="https://www.google.com/search?tbm=shop&q=${q}" target="_blank" rel="noopener">Google Alışveriş'te ara</a></p>
-    <p><a href="https://www.akakce.com/arama/?q=${q}" target="_blank" rel="noopener">Akakçe'de ara</a></p>
-    <p><a href="https://www.trendyol.com/sr?q=${q}" target="_blank" rel="noopener">Trendyol'da ara</a></p>
-    <p><a href="https://www.hepsiburada.com/ara?q=${q}" target="_blank" rel="noopener">Hepsiburada'da ara</a></p>
+    <h3>Fiyat karşılaştırma</h3>
+    <p>Aranan ürün: <strong>${safeProduct}</strong></p>
+    <p class="sub">Aşağıdaki mağazalarda fiyatları kontrol edebilirsin.</p>
+    <div class="card">
+      ${stores.map(store => `
+        <div class="row" style="justify-content:space-between;align-items:center;padding:10px 0">
+          <strong>${store.name}</strong>
+          <a href="${store.url}" target="_blank" rel="noopener"
+             style="color:#29d7ff;font-weight:bold">
+            Fiyatları gör ↗
+          </a>
+        </div>
+      `).join('')}
+    </div>
+    <p class="sub">
+      Not: Fiyatlar mağazalarda görüntülenir. Bu ekran henüz fiyatları otomatik
+      çekmez veya en ucuz mağazayı kendiliğinden belirlemez.
+    </p>
   `;
 }
 function removeOpp(i){if(confirm('Bu fırsatı silmek istiyor musun?')){opportunities.splice(i,1);persist();renderOpps();renderHome()}}
