@@ -770,6 +770,57 @@ function oppHTML(o,i){return `<div class="opportunity"><div class="row"><span cl
 function renderOpps(){$('allOpportunities').innerHTML=opportunities.length?opportunities.map(oppHTML).join(''):'<div class="empty">Henüz fırsat kaydetmedin.</div>';$('oppCount').textContent=opportunities.length+' fırsat'}
 function renderHome(){$('savedCount').textContent=opportunities.length;$('homeOpportunities').innerHTML=opportunities.length?opportunities.slice(-3).reverse().map((o)=>`<div class="opportunity"><span class="tag">${esc(o.type)}</span><h3>${esc(o.title)}</h3><p>${esc(o.notes||'Not eklenmedi')}</p><b style="color:var(--accent)">${esc(o.money||'Kazanç belirtilmedi')}</b></div>`).join(''):'<div class="empty">Henüz kayıtlı fırsat yok. “Fırsatlar” bölümünden ilk fırsatını ekleyebilirsin.</div>'}
 function addOpportunity(){const title=$('oppTitle').value.trim();if(!title){alert('Lütfen fırsat adını yaz.');return}opportunities.push({title,type:$('oppType').value,money:$('oppMoney').value.trim(),source:$('oppSource').value.trim(),notes:$('oppNotes').value.trim(),created:new Date().toISOString()});persist();['oppTitle','oppMoney','oppSource','oppNotes'].forEach(id=>$(id).value='');renderOpps();renderHome();alert('Fırsat kaydedildi.')}
+let savedProducts = JSON.parse(
+  localStorage.getItem('fa_saved_products') || '[]'
+);
+
+function saveProduct(name, url){
+  if(savedProducts.some(p => p.name === name)){
+    alert('Bu ürün zaten kayıtlı.');
+    return;
+  }
+
+  savedProducts.push({
+    name: name,
+    url: url,
+    date: new Date().toISOString()
+  });
+
+  localStorage.setItem(
+    'fa_saved_products',
+    JSON.stringify(savedProducts)
+  );
+
+  renderSavedProducts();
+  alert('Ürün kaydedildi.');
+}
+
+function renderSavedProducts(){
+  const box = $('savedProducts');
+  if(!box) return;
+
+  if(savedProducts.length === 0){
+    box.innerHTML = '<p class="sub">Henüz kaydedilmiş ürün yok.</p>';
+    return;
+  }
+
+  box.innerHTML = savedProducts.map((p, i) => `
+    <div class="card">
+      <strong>${p.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</strong>
+      <p><a href="${p.url}" target="_blank" rel="noopener">Ürün aramasını aç ↗</a></p>
+      <button class="btn" onclick="removeSavedProduct(${i})">Sil</button>
+    </div>
+  `).join('');
+}
+
+function removeSavedProduct(index){
+  savedProducts.splice(index, 1);
+  localStorage.setItem(
+    'fa_saved_products',
+    JSON.stringify(savedProducts)
+  );
+  renderSavedProducts();
+}
 function searchProducts(){
   const input = $('productSearch');
   const results = $('productResults');
