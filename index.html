@@ -1,12 +1,172 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fırsat Avcısı</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: linear-gradient(145deg,#071126,#101f42,#06101f);
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    main {
+      max-width: 420px;
+      margin: 50px auto;
+    }
+    h1 { color: #35c8ff; }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin: 8px 0 16px;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+    input {
+      border: 1px solid #294a75;
+      background: #0c1930;
+      color: white;
+    }
+    button {
+      border: 0;
+      background: linear-gradient(90deg,#087cff,#20c7ff);
+      color: white;
+      font-weight: bold;
+    }
+    #resetForm { display: none; }
+    #message { color: #55d9ff; overflow-wrap: anywhere; }
+  </style>
 </head>
 <body>
-  <h1>Fırsat Avcısı</h1>
-  <p>E-posta doğrulama işlemi için bu sayfa açıldı.</p>
+  <main>
+    <h1>🔷 Fırsat Avcısı</h1>
+    <p id="status">Bağlantı kontrol ediliyor...</p>
+
+    <form id="resetForm">
+      <label>Yeni şifre</label>
+      <input id="password" type="password"
+        minlength="8" autocomplete="new-password" required
+        placeholder="En az 8 karakter">
+
+      <label>Yeni şifre tekrar</label>
+      <input id="password2" type="password"
+        minlength="8" autocomplete="new-password" required
+        placeholder="Şifreni tekrar yaz">
+
+      <button type="submit">Şifremi Güncelle</button>
+    </form>
+
+    <p id="message" role="status"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL =
+      'https://ijkondrqjqoizcsdpezr.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_j64alClR7egp0QtoRnqkVA_w_bqYtuu';
+
+    const client = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const statusText = document.getElementById('status');
+    const form = document.getElementById('resetForm');
+    const message = document.getElementById('message');
+
+    async function checkLink() {
+      const hash = new URLSearchParams(
+        window.location.hash.slice(1)
+      );
+      const query = new URLSearchParams(
+        window.location.search
+      );
+
+      const code = query.get('code');
+      const type = hash.get('type') || query.get('type');
+      const tokenHash = query.get('token_hash');
+
+      try {
+        if (code) {
+          const { error } =
+            await client.auth.exchangeCodeForSession(code);
+          if (error) throw error;
+        } else if (tokenHash && type) {
+          const { error } =
+            await client.auth.verifyOtp({
+              token_hash: tokenHash,
+              type: type
+            });
+          if (error) throw error;
+        } else if (hash.get('access_token') &&
+                   hash.get('refresh_token')) {
+          const { error } = await client.auth.setSession({
+            access_token: hash.get('access_token'),
+            refresh_token: hash.get('refresh_token')
+          });
+          if (error) throw error;
+        }
+
+        const { data, error } =
+          await client.auth.getSession();
+        if (error) throw error;
+
+        if (data.session && type === 'recovery') {
+          statusText.textContent = 'Yeni şifreni belirle.';
+          form.style.display = 'block';
+        } else if (data.session) {
+          statusText.textContent =
+            'E-posta bağlantısı doğrulandı. Fırsat Avcısı uygulamasına dönebilirsin.';
+        } else {
+          statusText.textContent =
+            'Bağlantı geçersiz veya süresi dolmuş olabilir. Uygulamadan yeni bir bağlantı iste.';
+        }
+      } catch (error) {
+        statusText.textContent =
+          'Bağlantı işlenemedi: ' + error.message;
+      }
+    }
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const password =
+        document.getElementById('password').value;
+      const password2 =
+        document.getElementById('password2').value;
+
+      if (password !== password2) {
+        message.textContent = 'Şifreler eşleşmiyor.';
+        return;
+      }
+
+      try {
+        message.textContent = 'Şifre güncelleniyor...';
+
+        const { error } = await client.auth.updateUser({
+          password: password
+        });
+
+        if (error) throw error;
+
+        form.reset();
+        form.style.display = 'none';
+        statusText.textContent =
+          'Şifren başarıyla güncellendi.';
+        message.textContent =
+          'Artık Fırsat Avcısı uygulamasında yeni şifrenle giriş yapabilirsin.';
+      } catch (error) {
+        message.textContent =
+          'Şifre güncellenemedi: ' + error.message;
+      }
+    });
+
+    checkLink();
+  </script>
 </body>
 </html>
