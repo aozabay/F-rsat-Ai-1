@@ -926,8 +926,9 @@ document.getElementById('memberRegisterForm')
         email: email,
         password: password,
         options: {
-          data: { full_name: name }
-        }
+          data: { full_name: name },
+          emailRedirectTo: 'https://aozabay.github.io/F-rsat-Ai-1/'
+         }
       });
 
       if (error) throw error;
