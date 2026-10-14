@@ -1007,18 +1007,28 @@ document.getElementById('memberLoginForm')
     }
   });
   supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    const accountEmail = document.getElementById('accountEmail');
-if (accountEmail) {
-  accountEmail.textContent = session.user.email || 'E-posta bulunamadı';
-}
-    const welcome = document.getElementById('welcomeScreen');
-    const membership = document.getElementById('membershipPage');
+  window.faAuthSession = session || null;
 
+  const accountEmail = document.getElementById('accountEmail');
+  if (accountEmail) {
+    accountEmail.textContent =
+      session?.user?.email || 'Giriş yapılmadı';
+  }
+
+  const welcome = document.getElementById('welcomeScreen');
+  const membership = document.getElementById('membershipPage');
+
+  if (session) {
     if (welcome) welcome.style.display = 'none';
     if (membership) membership.style.display = 'none';
-
     showPage('home');
+  } else {
+    if (welcome) welcome.style.display = 'none';
+    if (membership) membership.style.display = 'block';
+
+    if (typeof showMemberForm === 'function') {
+      showMemberForm('login');
+    }
   }
 });
   async function logoutMember() {
@@ -1029,8 +1039,21 @@ if (accountEmail) {
 
     if (error) throw error;
 
-    document.getElementById('membershipPage').style.display = 'block';
-    document.getElementById('welcomeScreen').style.display = 'none';
+    window.faAuthSession = null;
+
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav button').forEach(b => {
+      b.classList.remove('active');
+    });
+
+    const welcome = document.getElementById('welcomeScreen');
+    const membership = document.getElementById('membershipPage');
+
+    if (welcome) welcome.style.display = 'none';
+    if (membership) membership.style.display = 'block';
 
     showMemberForm('login');
 
@@ -1042,7 +1065,7 @@ if (accountEmail) {
       msg.textContent = 'Çıkış hatası: ' + error.message;
     }
   }
-  }
+}
 </script>
 
 <!-- UYELIK EKRANI SONU -->
