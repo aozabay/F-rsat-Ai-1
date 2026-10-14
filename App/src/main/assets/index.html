@@ -716,7 +716,34 @@ function setOrbState(state, message) {
 }
 let opportunities=JSON.parse(localStorage.getItem('fa_opps')||'[]');
 let messages=JSON.parse(localStorage.getItem('fa_chat')||'[]');
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='opportunities')renderOpps();if(id==='home')renderHome();window.scrollTo(0,0)}
+function showPage(id) {
+  if (!window.faAuthSession) {
+    const welcome = document.getElementById('welcomeScreen');
+    const membership = document.getElementById('membershipPage');
+
+    if (welcome) welcome.style.display = 'none';
+    if (membership) membership.style.display = 'block';
+
+    if (typeof showMemberForm === 'function') {
+      showMemberForm('login');
+    }
+
+    return;
+  }
+
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.toggle('active', p.id === id);
+  });
+
+  document.querySelectorAll('.nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === id);
+  });
+
+  if (id === 'opportunities') renderOpps();
+  if (id === 'home') renderHome();
+
+  window.scrollTo(0, 0);
+}
 function persist(){localStorage.setItem('fa_opps',JSON.stringify(opportunities));$('savedCount').textContent=opportunities.length;$('oppCount').textContent=opportunities.length+' fırsat'}
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function oppHTML(o,i){return `<div class="opportunity"><div class="row"><span class="tag">${esc(o.type)}</span><button class="btn secondary small" onclick="removeOpp(${i})">Sil</button></div><h3>${esc(o.title)}</h3><p>${esc(o.notes||'Not eklenmedi')}</p><div class="row"><span class="muted">${esc(o.source||'Kaynak belirtilmedi')}</span><b style="color:var(--accent)">${esc(o.money||'Kazanç belirtilmedi')}</b></div></div>`}
