@@ -664,6 +664,14 @@ input, textarea, select {
 
 <section id="settings" class="page">
 <h2>Ayarlar ve geliştirici alanı</h2><p class="sub">Bu proje genişletilebilir olacak şekilde hazırlanmıştır.</p>
+<div class="card">
+  <h2>Hesabım</h2>
+  <p class="muted">Giriş yaptığın hesap:</p>
+  <p id="accountEmail">Hesap bilgisi yükleniyor...</p>
+  <button class="btn secondary" onclick="logoutMember()">
+    Çıkış Yap
+  </button>
+</div>
 <div class="card"><h2>Gizlilik</h2><p class="muted">Bu prototipte kayıtlar tarayıcının localStorage alanında saklanır. Tarayıcı verilerini temizlersen kayıtlar silinebilir. Henüz hesap sistemi veya bulut senkronizasyonu yoktur.</p><button class="btn secondary" onclick="exportData()">Verilerimi dışa aktar (JSON)</button> <button class="btn secondary" onclick="clearData()">Yerel verileri sil</button></div>
 <div class="card"><h2>Geliştirme yol haritası</h2><div class="opportunity">1. Aşama — Mobil uyumlu PWA arayüzü <span class="tag green">Bu prototip</span></div><div class="opportunity">2. Aşama — Gerçek AI bağlantısı <span class="tag">Sonraki</span></div><div class="opportunity">3. Aşama — Arama kaynakları ve yinelenen ilanları temizleme <span class="tag">Planlandı</span></div><div class="opportunity">4. Aşama — Sunucu zamanlayıcısı ve bildirimler <span class="tag">Planlandı</span></div><div class="opportunity">5. Aşama — Android APK ve açık kaynak deposu <span class="tag">Planlandı</span></div></div>
 <div class="notice">Güvenlik: API anahtarlarını uygulama koduna yazma. Gerçek entegrasyonda anahtarlar sunucu tarafında saklanmalı. Başvurular ve mesajlar için kullanıcı onayı alınmalı.</div>
@@ -982,6 +990,28 @@ document.getElementById('memberLoginForm')
     showPage('home');
   }
 });
+  async function logoutMember() {
+  const msg = document.getElementById('memberMessage');
+
+  try {
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) throw error;
+
+    document.getElementById('membershipPage').style.display = 'block';
+    document.getElementById('welcomeScreen').style.display = 'none';
+
+    showMemberForm('login');
+
+    if (msg) {
+      msg.textContent = 'Çıkış yapıldı. Tekrar giriş yapabilirsin.';
+    }
+  } catch (error) {
+    if (msg) {
+      msg.textContent = 'Çıkış hatası: ' + error.message;
+    }
+  }
+  }
 </script>
 
 <!-- UYELIK EKRANI SONU -->
