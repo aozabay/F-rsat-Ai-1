@@ -750,7 +750,9 @@ function showPage(id) {
 
     return;
   }
-
+  if (id !== 'membershipPage' && id !== 'resetPasswordPage') {
+  localStorage.setItem('fa_last_page', id);
+  }
   document.querySelectorAll('.page').forEach(p => {
     p.classList.toggle('active', p.id === id);
   });
@@ -1229,7 +1231,8 @@ document.getElementById('memberLoginForm')
     if (membership) membership.style.display = 'none';
     if (resetPage) resetPage.style.display = 'none';
 
-    showPage('home');
+    const lastPage = localStorage.getItem('fa_last_page') || 'home';
+showPage(lastPage);
   } else {
     if (welcome) welcome.style.display = 'none';
     if (membership) membership.style.display = 'block';
