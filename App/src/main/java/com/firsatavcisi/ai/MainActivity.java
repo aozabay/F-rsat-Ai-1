@@ -89,7 +89,31 @@ public class MainActivity extends Activity {
             settings.setAllowContentAccess(true);
             settings.setGeolocationEnabled(true);
 
-            webView.setWebViewClient(new WebViewClient());
+            webView.setWebViewClient(new WebViewClient() {
+    @Override
+    public boolean shouldOverrideUrlLoading(
+            WebView view,
+            android.webkit.WebResourceRequest request) {
+
+        String url = request.getUrl().toString();
+
+        if (url.startsWith("http://")
+                || url.startsWith("https://")) {
+            try {
+                Intent intent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(url)
+                );
+                startActivity(intent);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+});
 
             webView.setWebChromeClient(new WebChromeClient() {
 
